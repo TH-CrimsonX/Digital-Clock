@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,64 +54,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-<link type="image/x-icon" href="crimsonx_32x32.ico" rel="shortcut icon" />
-	
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="font.css">
-    <title>Digital Clock by Crimson X</title>
-
-</head>
-<body>
-<section class="container">
-	<div id="clock"></div>
-    <div id="countdownDisplay"></div>
-
-    <button id="mainClearAlarmBtn" class="custom-btn link-btn" style="display: none;"><span>ปิดนาฬิกาปลุก</span></button>
-    <button id="toggleAlarmSetupBtn" class="custom-btn link-btn"><span>ตั้งค่า</span></button>
-
-    <div id="alarmControls" style="display: none; text-align: center;">
-		<input onchange="setAlarmTime(this.value)" name="alarmTime" type="datetime-local">
-		<div class="frame">
-            <button onclick="setAlarm()" class="custom-btn link-btn"><span>ยืนยันตั้งปลุก</span></button>
-            <button id="cancelAlarmSetupBtn" class="custom-btn link-btn"><span>กลับหน้าแรก</span></button>
-            <br>
-            <button class="custom-btn link-btn" onclick="window.open('https://github.com/TH-CrimsonX');"><span>GitHub</span></button>
-            <button class="custom-btn link-btn" onclick="window.open('index.html',null,'toolbar=no,directories=no,menubar=no,scrollbars=no,location=no,resizable =no,width=685,height=1165,left=0,top=0');"><span>เปิดแบบ Pop-up</span></button>
-		</div>
-        
-        <label for="themeSelector">เลือกธีมสี:</label>
-        <select id="themeSelector" onchange="applyTheme(this.value)">
-            <option value="red">แดง</option>
-            <option value="blue">น้ำเงิน</option>
-            <option value="green">เขียว</option>
-            <option value="purple">ม่วง</option>
-            <option value="orange">ส้ม</option>
-            <option value="pink">ชมพู</option>
-            <option value="gold">ทอง</option>
-            <option value="cyan">ฟ้าอมเขียว</option>
-        </select>
-        <br>
-        <p class="powered-by-text">
-            Powered by
-        </p>
-        <p style="margin-top: -5px;">
-            <a href="https://discord.com/users/122811441819549697" target="_blank" class="crimson-x-animated">
-                Crimson X
-            </a>
-        </p>
-	</div>
-</section>
-
-<script src="script.js"></script>
-</body>
-</html>
->>>>>>> ff2153964f51a93192f7915dcc59d746332e3a8b
