@@ -1,56 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-
-<link type="image/x-icon" href="../crimsonx_32x32.ico" rel="shortcut icon" />
-	
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="crimsonx_32x32.ico">
     <link rel="stylesheet" href="font.css">
+    <link rel="stylesheet" href="style.css">
     <title>Digital Clock by Crimson X</title>
-
 </head>
 <body>
-<section class="container">
-	<div id="clock"></div>
-    <div id="countdownDisplay"></div>
+    <main class="container">
+        <time id="clock" aria-label="เวลาปัจจุบัน">
+            <span id="hours">00</span><span class="clock-separator" aria-hidden="true">:</span><span id="minutes">00</span><span class="clock-separator" aria-hidden="true">:</span><span id="seconds">00</span>
+        </time>
+        <div id="countdownDisplay"></div>
 
-    <button id="mainClearAlarmBtn" class="custom-btn link-btn" style="display: none;"><span>ปิดนาฬิกาปลุก</span></button>
-    <button id="toggleAlarmSetupBtn" class="custom-btn link-btn"><span>ตั้งค่า</span></button>
+        <button id="mainClearAlarmBtn" class="custom-btn link-btn" type="button" hidden><span>ปิดนาฬิกาปลุก</span></button>
+        <button id="toggleAlarmSetupBtn" class="custom-btn link-btn" type="button"><span>ตั้งค่า</span></button>
 
-    <div id="alarmControls" style="display: none; text-align: center;">
-		<input onchange="setAlarmTime(this.value)" name="alarmTime" type="datetime-local">
-		<div class="frame">
-            <button onclick="setAlarm()" class="custom-btn link-btn"><span>ยืนยันตั้งปลุก</span></button>
-            <button id="cancelAlarmSetupBtn" class="custom-btn link-btn"><span>กลับหน้าแรก</span></button>
-            <br>
-            <button class="custom-btn link-btn" onclick="window.open('https://github.com/TH-CrimsonX');"><span>GitHub</span></button>
-            <button class="custom-btn link-btn" onclick="window.open('index.html',null,'toolbar=no,directories=no,menubar=no,scrollbars=no,location=no,resizable =no,width=685,height=1165,left=0,top=0');"><span>เปิดแบบ Pop-up</span></button>
-		</div>
-        
-        <label for="themeSelector">เลือกธีมสี:</label>
-        <div class="theme-selection-wrapper">
-            <button id="prevThemeBtn" class="arrow-btn">&lt;</button>
-            <select id="themeSelector" onchange="applyTheme(this.value)">
-                </select>
-            <button id="nextThemeBtn" class="arrow-btn">&gt;</button>
-        </div>
-        
-        <br>
-        <p class="powered-by-text">
-            Powered by
-        </p>
-        <p style="margin-top: -5px;">
-            <a href="https://discord.com/users/122811441819549697" target="_blank" class="crimson-x-animated">
-                Crimson X
-            </a>
-        </p>
-	</div>
-</section>
+        <section id="alarmControls" class="alarm-controls" aria-label="ตั้งค่านาฬิกาปลุก" hidden>
+            <input id="alarmTime" name="alarmTime" type="datetime-local" aria-label="วันและเวลาปลุก">
+            <div class="frame">
+                <button id="setAlarmBtn" class="custom-btn link-btn" type="button"><span>ยืนยันตั้งปลุก</span></button>
+                <button id="cancelAlarmSetupBtn" class="custom-btn link-btn" type="button"><span>กลับหน้าแรก</span></button>
+                <a class="custom-btn link-btn" href="https://github.com/TH-CrimsonX" target="_blank" rel="noopener noreferrer"><span>GitHub</span></a>
+                <button id="popupBtn" class="custom-btn link-btn" type="button"><span>เปิดแบบ Pop-up</span></button>
+            </div>
 
+            <label for="themeSelector">เลือกธีมสี:</label>
+            <div class="theme-selection-wrapper">
+                <button id="prevThemeBtn" class="arrow-btn" type="button" aria-label="ธีมก่อนหน้า">&lt;</button>
+                <select id="themeSelector"></select>
+                <button id="nextThemeBtn" class="arrow-btn" type="button" aria-label="ธีมถัดไป">&gt;</button>
+            </div>
+
+            <p class="powered-by-text">Powered by</p>
+            <p class="powered-by-name">
+                <a href="https://discord.com/users/122811441819549697" target="_blank" rel="noopener noreferrer" class="crimson-x-animated">Crimson X</a>
+            </p>
+        </section>
+    </main>
 <script src="script.js"></script>
 </body>
 </html>

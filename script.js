@@ -1,4 +1,6 @@
-const display = document.getElementById('clock');
+const hoursDisplay = document.getElementById('hours');
+const minutesDisplay = document.getElementById('minutes');
+const secondsDisplay = document.getElementById('seconds');
 const audio = new Audio('sounds/TheCrimsonX - Crimson Metal Gaming.mp3');
 audio.loop = true;
 let alarmTime = null;
@@ -14,6 +16,8 @@ const mainClearAlarmBtn = document.getElementById('mainClearAlarmBtn');
 const themeSelector = document.getElementById('themeSelector');
 const prevThemeBtn = document.getElementById('prevThemeBtn');
 const nextThemeBtn = document.getElementById('nextThemeBtn');
+const setAlarmBtn = document.getElementById('setAlarmBtn');
+const popupBtn = document.getElementById('popupBtn');
 
 const thaiMonths = [
     "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
@@ -691,52 +695,51 @@ function applyTheme(themeName) {
     }
 }
 
-// Function to update time display
 function updateTime() {
     const date = new Date();
-    const hour = formatTime(date.getHours());
-    const minutes = formatTime(date.getMinutes());
-    const seconds = formatTime(date.getSeconds());
-    display.innerText = `${hour} : ${minutes} : ${seconds}`;
+    hoursDisplay.textContent = formatTime(date.getHours());
+    minutesDisplay.textContent = formatTime(date.getMinutes());
+    secondsDisplay.textContent = formatTime(date.getSeconds());
 }
 
-// Helper function to format time (add leading zero)
 function formatTime(time) {
-    return time < 10 ? '0' + time : time;
+    return String(time).padStart(2, '0');
 }
 
-// Function to set alarm time from input
 function setAlarmTime(value) {
     alarmTime = value;
 }
 
-// Function to toggle alarm controls visibility
 function toggleAlarmControls() {
-    if (alarmControls.style.display === 'none' || alarmControls.style.display === '') {
-        alarmControls.style.display = 'block';
-        toggleAlarmSetupBtn.style.display = 'none';
-    } else {
-        alarmControls.style.display = 'none';
-        toggleAlarmSetupBtn.style.display = 'block';
+    const isOpening = alarmControls.hidden;
+    alarmControls.hidden = !isOpening;
+    toggleAlarmSetupBtn.hidden = isOpening;
+
+    if (!isOpening) {
         alarmInput.value = '';
     }
 }
 
-// Function to start the countdown display
+function showMessage(text, duration = 2000) {
+    const messageBox = document.createElement('div');
+    messageBox.classList.add('custom-message-box');
+    messageBox.textContent = text;
+    document.body.appendChild(messageBox);
+    setTimeout(() => messageBox.remove(), duration);
+}
+
 function startCountdown() {
     stopCountdown();
     updateCountdown();
     countdownInterval = setInterval(updateCountdown, 1000);
 }
 
-// Function to stop the countdown display
 function stopCountdown() {
     clearInterval(countdownInterval);
     countdownInterval = null;
     countdownDisplay.innerText = '';
 }
 
-// Function to update the countdown text
 function updateCountdown() {
     if (!alarmTime) {
         stopCountdown();
@@ -778,15 +781,14 @@ function updateCountdown() {
         remainingTimePart += `${days} วัน `;
     }
     remainingTimePart += `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-    
+
     countdownText += `เหลือเวลาอีก ${remainingTimePart} นาฬิกาปลุกจะทำงาน`;
-    
+
     countdownDisplay.innerHTML = countdownText;
 }
 
-// Function to set the alarm
 function setAlarm() {
-    if(alarmTime) {
+    if (alarmTime) {
         const current = new Date();
         const timeToAlarm = new Date(alarmTime);
 
@@ -795,82 +797,50 @@ function setAlarm() {
             alarmTimeout = setTimeout(() => {
                 audio.play();
                 stopCountdown();
-                mainClearAlarmBtn.style.display = 'block';
-                countdownDisplay.innerHTML = 'ปลุกแล้ว!'; 
+                mainClearAlarmBtn.hidden = false;
+                countdownDisplay.innerHTML = 'ปลุกแล้ว!';
             }, timeout);
-            
-            startCountdown();
-            const messageBox = document.createElement('div');
-            messageBox.innerText = 'ตั้งปลุก เรียบร้อย';
-            messageBox.classList.add('custom-message-box');
-            document.body.appendChild(messageBox);
-            setTimeout(() => {
-                document.body.removeChild(messageBox);
-            }, 2000);
 
+            startCountdown();
+            showMessage('ตั้งปลุก เรียบร้อย');
             toggleAlarmControls();
-            mainClearAlarmBtn.style.display = 'block';
+            mainClearAlarmBtn.hidden = false;
         } else {
-            const messageBox = document.createElement('div');
-            messageBox.innerText = 'ไม่สามารถตั้งปลุกในอดีตได้ กรุณาเลือกเวลาในอนาคต';
-            messageBox.classList.add('custom-message-box');
-            document.body.appendChild(messageBox);
-            setTimeout(() => {
-                document.body.removeChild(messageBox);
-            }, 3000);
+            showMessage('ไม่สามารถตั้งปลุกในอดีตได้ กรุณาเลือกเวลาในอนาคต', 3000);
         }
     } else {
-        const messageBox = document.createElement('div');
-        messageBox.innerText = 'กรุณาเลือกเวลาที่จะตั้งปลุกก่อน';
-        messageBox.classList.add('custom-message-box');
-        document.body.appendChild(messageBox);
-        setTimeout(() => {
-            document.body.removeChild(messageBox);
-        }, 2000);
+        showMessage('กรุณาเลือกเวลาที่จะตั้งปลุกก่อน');
     }
 }
 
-// Function to clear the alarm
 function clearAlarm() {
     audio.pause();
     if (alarmTimeout) {
         clearTimeout(alarmTimeout);
-        const messageBox = document.createElement('div');
-        messageBox.innerText = 'เคลียข้อมูลนาฬิกาปลุก เรียบร้อย';
-        messageBox.classList.add('custom-message-box');
-        document.body.appendChild(messageBox);
-        setTimeout(() => {
-            document.body.removeChild(messageBox);
-        }, 2000);
-
+        showMessage('เคลียข้อมูลนาฬิกาปลุก เรียบร้อย');
         alarmTimeout = null;
     } else {
-        const messageBox = document.createElement('div');
-        messageBox.innerText = 'ไม่มีนาฬิกาปลุกที่ตั้งไว้';
-        messageBox.classList.add('custom-message-box');
-        document.body.appendChild(messageBox);
-        setTimeout(() => {
-            document.body.removeChild(messageBox);
-        }, 2000);
+        showMessage('ไม่มีนาฬิกาปลุกที่ตั้งไว้');
     }
     stopCountdown();
-    mainClearAlarmBtn.style.display = 'none';
+    mainClearAlarmBtn.hidden = true;
     alarmTime = null;
 }
 
-// Event Listeners for buttons
 toggleAlarmSetupBtn.addEventListener('click', toggleAlarmControls);
-cancelAlarmSetupBtn.addEventListener('click', () => {
-    toggleAlarmControls();
-});
+cancelAlarmSetupBtn.addEventListener('click', toggleAlarmControls);
 mainClearAlarmBtn.addEventListener('click', clearAlarm);
+alarmInput.addEventListener('change', () => setAlarmTime(alarmInput.value));
+setAlarmBtn.addEventListener('click', setAlarm);
+themeSelector.addEventListener('change', () => applyTheme(themeSelector.value));
+popupBtn.addEventListener('click', () => {
+    window.open('index.html', '_blank', 'toolbar=no,directories=no,menubar=no,scrollbars=no,location=no,resizable=no,width=685,height=1165,left=0,top=0');
+});
 
-// --- Theme navigation with arrow buttons ---
 const themeNames = Object.keys(themeColors);
 
-// Populate theme selector dropdown dynamically
 function populateThemeSelector() {
-    themeSelector.innerHTML = ''; // Clear existing options
+    themeSelector.innerHTML = '';
     themeNames.forEach(themeName => {
         const option = document.createElement('option');
         option.value = themeName;
@@ -879,25 +849,18 @@ function populateThemeSelector() {
     });
 }
 
+function navigateTheme(direction) {
+    const currentIndex = themeNames.indexOf(themeSelector.value);
+    const nextIndex = (currentIndex + direction + themeNames.length) % themeNames.length;
+    applyTheme(themeNames[nextIndex]);
+}
 
-prevThemeBtn.addEventListener('click', () => {
-    let currentIndex = themeNames.indexOf(themeSelector.value);
-    let newIndex = (currentIndex - 1 + themeNames.length) % themeNames.length;
-    applyTheme(themeNames[newIndex]);
-});
-
-nextThemeBtn.addEventListener('click', () => {
-    let currentIndex = themeNames.indexOf(themeSelector.value);
-    let newIndex = (currentIndex + 1) % themeNames.length;
-    applyTheme(themeNames[newIndex]);
-});
-
-// Update time every second
+prevThemeBtn.addEventListener('click', () => navigateTheme(-1));
+nextThemeBtn.addEventListener('click', () => navigateTheme(1));
 setInterval(updateTime, 1000);
+updateTime();
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    mainClearAlarmBtn.style.display = 'none';
-    populateThemeSelector(); // Populate dropdown on load
-    applyTheme('Crimson Red'); // กำหนดธีมเริ่มต้นเมื่อโหลดหน้าเว็บ
+    populateThemeSelector();
+    applyTheme('Crimson Red');
 });
